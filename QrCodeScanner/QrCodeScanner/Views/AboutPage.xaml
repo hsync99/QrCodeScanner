@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="QrCodeScanner.Views.AboutPage"
+             xmlns:vm="clr-namespace:QrCodeScanner.ViewModels"
+             xmlns:zx="clr-namespace:ZXing.Net.Mobile.Forms;assembly=ZXing.Net.Mobile.Forms"
+             Title="{Binding Title}">
+    
+    <ContentPage.BindingContext>
+        <vm:AboutViewModel />
+    </ContentPage.BindingContext>
+    
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Color x:Key="Accent">#96d1ff</Color>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <StackLayout>
+        <Frame WidthRequest="300" HeightRequest="300">
+            <zx:ZXingScannerView x:Name="qrview" IsScanning="True" OnScanResult="qrview_OnScanResult">
+
+            </zx:ZXingScannerView>
+        </Frame>
+        <Label x:Name="ScanResult"> </Label>
+    </StackLayout>
+
+</ContentPage>
