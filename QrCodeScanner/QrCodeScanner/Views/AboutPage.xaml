@@ -22,7 +22,7 @@
 
             </zx:ZXingScannerView>
         </Frame>
-        <Label x:Name="ScanResult"> </Label>
+        <Label x:Name="ScanResult" Text="{Binding Res}"> </Label>
     </StackLayout>
 
 </ContentPage>

@@ -1,9 +1,10 @@
 ﻿using QrCodeScanner.ViewModels;
 using System;
 using System.ComponentModel;
+using System.Net.NetworkInformation;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
-
+using ZXing.Mobile;
 namespace QrCodeScanner.Views
 {
     public partial class AboutPage : ContentPage
@@ -16,17 +17,19 @@ namespace QrCodeScanner.Views
 
         }
 
-        private void qrview_OnScanResult(ZXing.Result result)
+        private async void qrview_OnScanResult(ZXing.Result result1)
         {
-            Device.BeginInvokeOnMainThread(async () =>
+            qrview.OnScanResult += (result) =>
+          Device.BeginInvokeOnMainThread(async () =>
             {
-                ScanResult.Text = result.Text;
-                string link = result.Text.Replace("mobileSign:","");
-                var data = await vm.GetRequisites(link);       
-                ScanResult.Text = data;
-                
-
+     
+                qrview.IsScanning = false;
+                MessagingCenter.Send<App, string>((App)Xamarin.Forms.Application.Current, "ScanData", result.Text);
             });
+            //string link = result1.Text.Replace("mobileSign:", "");
+
+            //var data = await vm.GetRequisites(link);
+            //ScanResult.Text = data;
         }
     }
 }
