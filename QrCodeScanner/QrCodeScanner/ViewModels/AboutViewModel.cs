@@ -4,6 +4,8 @@ using System.Windows.Input;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 using Newtonsoft.Json;
+using QrCodeScanner.Models;
+
 namespace QrCodeScanner.ViewModels
 {
     public class AboutViewModel : BaseViewModel
@@ -17,8 +19,12 @@ namespace QrCodeScanner.ViewModels
             OpenWebCommand = new Command(async () => await Browser.OpenAsync("https://aka.ms/xamarin-quickstart"));
             MessagingCenter.Subscribe<App, string>(this, "ScanData", async (sender, data) =>
             {
-              var r = await GetRequisites(data);
-                
+                var req_json = await GetRequisites(data);
+                var requisites = JsonConvert.DeserializeObject<Requisites>(req_json); 
+
+                var api2_uri = requisites.document.uri;
+                var doc_json = await GetDocumentData(api2_uri);
+                await PutDocument(api2_uri, doc_json);
 
             });
         }
@@ -33,9 +39,13 @@ namespace QrCodeScanner.ViewModels
             Res = response;
             return response;
         }
-        public async void GetDocumentData(string link)
+        public async Task<string> GetDocumentData(string link)
         {
-            var docdata = await restClient.GetDocumentData(link);   
+            return  await restClient.GetDocumentData(link);   
+        }
+        public async Task PutDocument(string link, string json)
+        {
+            await restClient.PutXmlSign(link,json,"");
         }
     }
 }
