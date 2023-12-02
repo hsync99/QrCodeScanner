@@ -17,11 +17,11 @@
     </ContentPage.Resources>
 
     <StackLayout>
-        <Frame WidthRequest="300" HeightRequest="300">
-            <zx:ZXingScannerView  x:Name="qrview" IsScanning="True" OnScanResult="qrview_OnScanResult">
 
-            </zx:ZXingScannerView>
-        </Frame>
+        <zx:ZXingScannerView   x:Name="qrview" IsScanning="True" OnScanResult="qrview_OnScanResult">
+
+        </zx:ZXingScannerView>
+
         <Label x:Name="ScanResult" Text="{Binding Res}"> </Label>
         <Button Text="Открыть документы" Command="{Binding GoToDocumentPageCommand}"/>
     </StackLayout>

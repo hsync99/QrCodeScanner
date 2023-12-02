@@ -10,23 +10,34 @@
     </ContentPage.BindingContext> 
     
     <ContentPage.Content>
+        <ScrollView>
         <StackLayout>
+            
             <Frame>
                 <StackLayout>
-                    
-                    <Label Text="{Binding DocumentXML.requisites.description}"/>
-                    <Label Text="{Binding DocumentXML.requisites.expiry_date}"/>
-                    <Label Text="Документы на подписание"/>
-                    <Label Text=""/>
-                    <Label Text="organisation-> nameRu"/>
-                    <Label Text="meta"/>
-                    <Label Text="documentXML"/>
+                
+                    <Label TextColor="Black" FontSize="14" Text="{Binding Description}"/>
+                    <Label TextColor="Black" FontSize="14" Text="{Binding Expiry_date}"/>
+                    <Label TextColor="Black" FontAttributes="Bold" FontSize="14" Text="Документы на подписание"/>
+                    <Frame>
+                        <StackLayout>
+                            <Label TextColor="Black" FontSize="14" Text="{Binding DocTitle}"/>
+                            <Label TextColor="Black" FontSize="14" Text="meta"/>
+                            <Label  FontSize="10" Text="Документ"/>
+                            <Label TextColor="Black" FontSize="14" Text="{Binding DocXML}"/>
+                            <Label FontSize="8" Text="{Binding Sign }"></Label>
+                        </StackLayout>
+                    </Frame>
 
+                   
 
                 </StackLayout>
+
             </Frame>
 
             <Button Text="Подписать"/>
+            
         </StackLayout>
+        </ScrollView>
     </ContentPage.Content>
 </ContentPage>

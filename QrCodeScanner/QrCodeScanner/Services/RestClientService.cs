@@ -63,7 +63,6 @@ namespace QrCodeScanner.Services
             try
             {
                 // var json = JsonConvert.SerializeObject(commands, Formatting.Indented);
-                var jsonBody = JsonConvert.DeserializeObject<string>(json); 
                 StringContent content = new StringContent(json);
                 // определяем данные запроса
                 var request = new HttpRequestMessage(HttpMethod.Put, address);

@@ -14,6 +14,8 @@ namespace QrCodeScanner.Views
         {
             InitializeComponent();
             vm = (AboutViewModel)BindingContext;
+         
+           
 
         }
 
