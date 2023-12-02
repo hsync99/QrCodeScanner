@@ -3,21 +3,24 @@ using QrCodeScanner.Models;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 using Xamarin.Forms;
 
 namespace QrCodeScanner.ViewModels
 {
-    [QueryProperty(nameof(DocJson), nameof(DocJson))]
-    [QueryProperty(nameof(ReqJson), nameof(ReqJson))]
+    [QueryProperty(nameof(ScanResult), nameof(ScanResult))]
+    
     public  class DocumentPageViewModel:BaseViewModel
     {
-        private string docjson;
+        private string scanResult;
         private string reqjson;
-        public string DocJson { get => docjson; set => SetProperty(ref docjson, value); }
-        public string ReqJson { get => reqjson; set => SetProperty(ref reqjson, value); }
+        public string ScanResult { get => scanResult; set => SetProperty(ref scanResult, value); }
         private DocumentXMLModel documentXML;
-        public DocumentXMLModel DocumentXML { get => documentXML; set=>SetProperty(ref documentXML, value); }   
-        
+        public DocumentXMLModel DocumentXML { get => documentXML; set=>SetProperty(ref documentXML, value); }
+
+
+        private string res;
+        public string Res { get => res; set => SetProperty(ref res,value); }
         public DocumentPageViewModel()
         {
 
@@ -26,18 +29,37 @@ namespace QrCodeScanner.ViewModels
         }
         public async void OnAppearing()
         {
-            DocumentXML = GetData(DocJson, ReqJson); 
+            //  DocumentXML = GetData(DocJson); 
+            GetData(ScanResult);
         }
-        public DocumentXMLModel GetData(string doc,string req)
+        public async void GetData(string data)
         {
-            var documentsData = JsonConvert.DeserializeObject<DocumentsData>(doc);
-            var requisites = JsonConvert.DeserializeObject<Requisites>(req);
+            var req_json = await GetRequisites(data);
+            var requisites = JsonConvert.DeserializeObject<Requisites>(req_json);
+
+            var api2_uri = requisites.document.uri;
+            var doc_json = await GetDocumentData(api2_uri);
+            var doc = JsonConvert.DeserializeObject<DocumentsData>(doc_json);
             DocumentXML = new DocumentXMLModel();
-
-            DocumentXML.documentsData = documentsData;
             DocumentXML.requisites = requisites;
-            return DocumentXML;
+            DocumentXML.documentsData = doc;
 
+        }
+        public async Task<string> GetRequisites(string scanResult)
+        {
+            string link = scanResult.Replace("mobileSign:", "");
+
+            string response = await restClient.GetRequisites(link);
+            Res = response;
+            return response;
+        }
+        public async Task<string> GetDocumentData(string link)
+        {
+            return await restClient.GetDocumentData(link);
+        }
+        public async Task PutDocument(string link, string json)
+        {
+            await restClient.PutXmlSign(link, json, "");
         }
 
     }
