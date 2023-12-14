@@ -4,6 +4,7 @@
              x:Class="QrCodeScanner.Views.AboutPage"
              xmlns:vm="clr-namespace:QrCodeScanner.ViewModels"
              xmlns:zx="clr-namespace:ZXing.Net.Mobile.Forms;assembly=ZXing.Net.Mobile.Forms"
+             Shell.TabBarIsVisible="False"
              Title="{Binding Title}">
     
     <ContentPage.BindingContext>
@@ -17,13 +18,25 @@
     </ContentPage.Resources>
 
     <StackLayout>
-
-        <zx:ZXingScannerView   x:Name="qrview" IsScanning="True" OnScanResult="qrview_OnScanResult">
-
-        </zx:ZXingScannerView>
-
-        <Label x:Name="ScanResult" Text="{Binding Res}"> </Label>
-        <Button Text="Открыть документы" Command="{Binding GoToDocumentPageCommand}"/>
+        <Frame Padding="0"  WidthRequest="500" HeightRequest="500">
+            <Grid RowDefinitions=".5*,*,.5*" >
+                <zx:ZXingScannerView
+                             Grid.RowSpan="3"
+                            x:Name="qrview" 
+                            IsScanning="True" 
+                            OnScanResult="qrview_OnScanResult"
+                            VerticalOptions="FillAndExpand"
+                            HorizontalOptions="FillAndExpand"
+                      />
+                <zx:ZXingDefaultOverlay 
+                    Grid.RowSpan="3"/>
+                <Button x:Name="scanBtn" Grid.RowSpan="3" Text="Нажимте чтобы включить сканер" IsVisible="false" Clicked="Button_Clicked"></Button>
+            </Grid>
+        </Frame>
+        <Label Text="Replace"/>
+        <Entry x:Name="replacefrom" Placeholder="Replace From"/>
+        <Entry x:Name="replaceto" Placeholder="Replace To"></Entry>
     </StackLayout>
+ 
 
 </ContentPage>

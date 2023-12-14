@@ -1,9 +1,12 @@
 ﻿using QrCodeScanner.Models;
 using QrCodeScanner.Services;
+using QrCodeScanner.Views;
+using Rg.Plugins.Popup.Extensions;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 using Xamarin.Forms;
 
 namespace QrCodeScanner.ViewModels
@@ -11,7 +14,9 @@ namespace QrCodeScanner.ViewModels
     public class BaseViewModel : INotifyPropertyChanged
     {
         public IDataStore<Item> DataStore => DependencyService.Get<IDataStore<Item>>();
-        public IRestClient restClient => DependencyService.Get<IRestClient>();  
+        public IRestClient restClient => DependencyService.Get<IRestClient>();
+
+    
 
         bool isBusy = false;
         public bool IsBusy
@@ -25,6 +30,13 @@ namespace QrCodeScanner.ViewModels
         {
             get { return title; }
             set { SetProperty(ref title, value); }
+        }
+        public async Task ShowWarning(string title, string message)
+        {
+            var popup = new DisplayAlertPage();
+            ((DisplayAlertViewModel)popup.BindingContext).Message = message;
+            ((DisplayAlertViewModel)popup.BindingContext).Title = title;
+            await App.Current.MainPage.Navigation.PushPopupAsync(popup, true);
         }
 
         protected bool SetProperty<T>(ref T backingStore, T value,

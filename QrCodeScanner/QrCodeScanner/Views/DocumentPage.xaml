@@ -3,6 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:vm="clr-namespace:QrCodeScanner.ViewModels"
              Title="Подписание"
+             Shell.NavBarIsVisible="False"
+             Shell.TabBarIsVisible="False"
              x:Class="QrCodeScanner.Views.DocumentPage">
 
     <ContentPage.BindingContext>
@@ -19,14 +21,28 @@
                     <Label TextColor="Black" FontSize="14" Text="{Binding Description}"/>
                     <Label TextColor="Black" FontSize="14" Text="{Binding Expiry_date}"/>
                     <Label TextColor="Black" FontAttributes="Bold" FontSize="14" Text="Документы на подписание"/>
-                    <Frame>
+                        <Label TextColor="Black" FontSize="14" Text="{Binding DocTitle}"/>
+                        <Frame>
                         <StackLayout>
-                            <Label TextColor="Black" FontSize="14" Text="{Binding DocTitle}"/>
-                            <Label TextColor="Black" FontSize="14" Text="meta"/>
+                                <Frame Padding="0" WidthRequest="200" HeightRequest="200">
+                                    <CollectionView x:Name="ItemsListView"
+                                        ItemsSource="{Binding Meta}"
+                                        SelectionMode="None">
+                                        <CollectionView.ItemTemplate>
+                                            <DataTemplate>
+                                                <StackLayout Padding="10">
+                                                    <Label  FontSize="10" Text="{Binding name}" />
+                                                    <Label  TextColor="Black" FontSize="14" Text="{Binding value}" />
+
+                                                </StackLayout>
+                                            </DataTemplate>
+                                        </CollectionView.ItemTemplate>
+                                    </CollectionView>
+                                </Frame>
+                              
                             <Label  FontSize="10" Text="Документ"/>
-                            <Label TextColor="Black" FontSize="14" Text="{Binding DocXML}"/>
-                            <Label FontSize="8" Text="{Binding Sign }"></Label>
-                        </StackLayout>
+                                <Label TextColor="Black" FontSize="14" Text="{Binding DocXML}"/>
+                            </StackLayout>
                     </Frame>
 
                    
@@ -35,9 +51,10 @@
 
             </Frame>
 
-            <Button Text="Подписать"/>
-            
-        </StackLayout>
+                <Button Text="Подписать" IsEnabled="{Binding SignEnabled}" Command="{Binding SignDocCommand}"/>
+                <Button Text="Отказать"  Command="{Binding ClosePageCommand}"/>
+
+            </StackLayout>
         </ScrollView>
     </ContentPage.Content>
 </ContentPage>

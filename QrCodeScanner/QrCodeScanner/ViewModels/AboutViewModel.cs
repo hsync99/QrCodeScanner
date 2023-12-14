@@ -16,8 +16,9 @@ namespace QrCodeScanner.ViewModels
        
         public DocumentsData DocumentsData { get; set; }
         public DocumentXMLModel DocumentXML { get; set; }
-       
 
+        private bool isactive = false;
+        public bool IsActive { get => isactive; set => SetProperty(ref isactive, value); }
         public AboutViewModel()
         {
             Title = "About";
